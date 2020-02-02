@@ -117,6 +117,13 @@ public class JMHBeachmarkMojo extends AbstractExecMojo {
     @Parameter(defaultValue = "${project.build.directory}")
     protected File outputParentDirectory;
 
+    @Parameter
+    private List<String> jvmArgsPrepend;
+
+    @Parameter
+    private List<String> jvmArgsAppend;
+    
+    
     /**
      * Additional elements to be appended to the classpath.
      * 
@@ -347,6 +354,8 @@ public class JMHBeachmarkMojo extends AbstractExecMojo {
             String...includes) {
 
         ChainedOptionsBuilder options = new OptionsBuilder().forks(forks) // 压测整体重复次数
+        		.jvmArgsPrepend(jvmArgsPrepend != null ? jvmArgsPrepend.toArray(new String[] {}) : new String[] {})//
+        		.jvmArgsAppend(jvmArgsAppend != null ? jvmArgsAppend.toArray(new String[] {}) : new String[] {})//
                 .warmupForks(warmupForks) // 预热整体重复次数
                 .threads(threads) // 并发线程数
                 .warmupMode(toWarmupMode(warmupMode)) // 预热方案，单独case前预热
